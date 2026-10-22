@@ -13,7 +13,7 @@ app.use((req, res, next) => {
 
 const MANIFEST = {
   id: 'org.raava.live',
-  version: '1.0.1',
+  version: '1.0.2',
   name: 'RAAVA LIVE',
   description: 'Deportes y Televisión en Vivo (Fútbol, F1, ESPN, TUDN, Star+)',
   logo: 'https://raw.githubusercontent.com/tacitsp1113/raava-str/main/logo.png',
@@ -30,7 +30,7 @@ const MANIFEST = {
     {
       type: 'tv',
       id: 'raava_live_channels',
-      name: '📺 Canales 24/7 (ESPN, TUDN, Max)'
+      name: '📺 Canales 24/7 (ESPN, TUDN, Fox, Max)'
     }
   ]
 };
@@ -49,7 +49,7 @@ app.get('/catalog/tv/:id.json', async (req, res) => {
       id: ch.id,
       type: 'tv',
       name: ch.name,
-      poster: 'https://raw.githubusercontent.com/tacitsp1113/raava-str/main/logo.png',
+      poster: ch.logo || 'https://raw.githubusercontent.com/tacitsp1113/raava-str/main/logo.png',
       posterShape: 'square',
       description: `Señal deportiva en vivo 24/7 • ${ch.name}`,
       genres: ['Deportes', 'En Vivo']
@@ -63,7 +63,7 @@ app.get('/catalog/tv/:id.json', async (req, res) => {
       id: ev.id,
       type: 'tv',
       name: `[${ev.time || 'HOY'}] ${ev.title}`,
-      poster: 'https://raw.githubusercontent.com/tacitsp1113/raava-str/main/logo.png',
+      poster: ev.poster || 'https://raw.githubusercontent.com/tacitsp1113/raava-str/main/logo.png',
       posterShape: 'landscape',
       description: `🏆 ${ev.category} | 📡 ${ev.channelName} (${ev.quality})`,
       genres: [ev.category, 'En Vivo']
@@ -86,7 +86,7 @@ app.get('/meta/tv/:id.json', async (req, res) => {
           id: ch.id,
           type: 'tv',
           name: ch.name,
-          poster: 'https://raw.githubusercontent.com/tacitsp1113/raava-str/main/logo.png',
+          poster: ch.logo || 'https://raw.githubusercontent.com/tacitsp1113/raava-str/main/logo.png',
           description: `Transmisión oficial de ${ch.name} en directo 24/7`,
           genres: ['Deportes', 'En Vivo'],
           videos: [
@@ -110,7 +110,7 @@ app.get('/meta/tv/:id.json', async (req, res) => {
           id: ev.id,
           type: 'tv',
           name: `[${ev.time}] ${ev.title}`,
-          poster: 'https://raw.githubusercontent.com/tacitsp1113/raava-str/main/logo.png',
+          poster: ev.poster || 'https://raw.githubusercontent.com/tacitsp1113/raava-str/main/logo.png',
           description: `Competición: ${ev.category}\nCanal: ${ev.channelName}\nCalidad: ${ev.quality}`,
           genres: [ev.category, 'Deportes'],
           videos: [
@@ -127,6 +127,7 @@ app.get('/meta/tv/:id.json', async (req, res) => {
 
   res.json({ meta: null });
 });
+
 
 
 // 4. Extracción y entrega de Streams en Vivo
